@@ -8,7 +8,6 @@
  */
 
 define('PROJECT_ROOT', realpath(__DIR__ . "/.."));
-//require_once __DIR__ . '/../vendor/autoload.php';
 
 class ApiTest extends PHPUnit_Framework_TestCase
 {
@@ -19,7 +18,7 @@ class ApiTest extends PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_METHOD'] = $method;
         $_SERVER['REQUEST_URI'] = $path;
         $_SERVER['SERVER_NAME'] = 'localhost';
-
+        require_once __DIR__ . '/../vendor/autoload.php';
         $app = new \Slim\App;
         require PROJECT_ROOT . '/app/app.php';
         $response = $app->run();
