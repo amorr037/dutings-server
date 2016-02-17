@@ -13,7 +13,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 class ApiTest extends PHPUnit_Framework_TestCase
 {
 
-    public function request($method, $path, $options = array())
+    protected function request($method, $path, $options = array())
     {
         ob_start();
         $_SERVER['REQUEST_METHOD'] = $method;
@@ -27,7 +27,7 @@ class ApiTest extends PHPUnit_Framework_TestCase
         return $response;
     }
 
-    public function get($path, $options = array())
+    protected function get($path, $options = array())
     {
         return $this->request('GET', $path, $options);
     }
