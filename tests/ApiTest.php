@@ -31,13 +31,19 @@ class ApiTest extends PHPUnit_Framework_TestCase
         return $this->request('GET', $path, $options);
     }
 
-    public function testHelloWorldEndpoint(){
-        $response = $this->get('/hello/javier');
-        $this->assertEquals(200, $response->getStatusCode());
-    }
-
     public function testAlwaysPass()
     {
         $this->assertEquals(200, 200);
+    }
+
+    public function testSettingsFetched()
+    {
+        $settings = require_once PROJECT_ROOT."/app/settings.php";
+        $this->assertNotEquals($settings, null);
+    }
+
+    public function testHelloWorldEndpoint(){
+        $response = $this->get('/hello/javier');
+        $this->assertEquals(200, $response->getStatusCode());
     }
 }
