@@ -24,6 +24,7 @@ $DUTINGS_DB_PORT = getenv("DUTINGS_DB_PORT");
 $DUTINGS_DB_USERNAME = getenv("DUTINGS_DB_USERNAME");
 $DUTINGS_DB_HOSTNAME = getenv("DUTINGS_DB_HOSTNAME");
 $DUTINGS_DB_PASSWORD = getenv("DUTINGS_DB_PASSWORD");
+$GOOGLE_CLIENT_ID = getenv("GOOGLE_CLIENT_ID");
 
 $homeDirectory = getenv('HOME');
 $settingsFilePath = "/".joinPaths($homeDirectory, "settings/dutings.php");
@@ -43,10 +44,14 @@ if(!$DUTINGS_DB_USERNAME){
 if(!$DUTINGS_DB_PASSWORD){
     throw new SettingsException("Missing database password.");
 }
+if(!$GOOGLE_CLIENT_ID){
+    throw new SettingsException("Missing google client id.");
+}
 
 return [
     "DUTINGS_DB_HOSTNAME" => $DUTINGS_DB_HOSTNAME,
     "DUTINGS_DB_PORT" => $DUTINGS_DB_PORT,
     "DUTINGS_DB_USERNAME" => $DUTINGS_DB_USERNAME,
     "DUTINGS_DB_PASSWORD" => $DUTINGS_DB_PASSWORD,
+    "GOOGLE_CLIENT_ID" => $GOOGLE_CLIENT_ID
 ];
