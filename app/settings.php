@@ -20,7 +20,7 @@ function joinPaths() {
     return join('/', $paths);
 }
 
-$DUTINGS_DB_PORT = getenv("DUTINGS_DB_PORT");
+$DUTINGS_DB_NAME = getenv("DUTINGS_DB_NAME");
 $DUTINGS_DB_USERNAME = getenv("DUTINGS_DB_USERNAME");
 $DUTINGS_DB_HOSTNAME = getenv("DUTINGS_DB_HOSTNAME");
 $DUTINGS_DB_PASSWORD = getenv("DUTINGS_DB_PASSWORD");
@@ -32,8 +32,8 @@ if(file_exists($settingsFilePath)){
     require_once $settingsFilePath;
 }
 
-if(!$DUTINGS_DB_PORT){
-    throw new SettingsException("Missing database port.");
+if(!$DUTINGS_DB_NAME){
+    throw new SettingsException("Missing database name.");
 }
 if(!$DUTINGS_DB_HOSTNAME){
     throw new SettingsException("Missing database hostname.");
@@ -50,7 +50,7 @@ if(!$GOOGLE_CLIENT_ID){
 
 return [
     "DUTINGS_DB_HOSTNAME" => $DUTINGS_DB_HOSTNAME,
-    "DUTINGS_DB_PORT" => $DUTINGS_DB_PORT,
+    "DUTINGS_DB_NAME" => $DUTINGS_DB_NAME,
     "DUTINGS_DB_USERNAME" => $DUTINGS_DB_USERNAME,
     "DUTINGS_DB_PASSWORD" => $DUTINGS_DB_PASSWORD,
     "GOOGLE_CLIENT_ID" => $GOOGLE_CLIENT_ID
