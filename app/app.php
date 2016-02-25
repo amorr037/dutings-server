@@ -17,6 +17,13 @@ $app->get('/hello/{name}', function (Request $request, Response $response) use($
     $response->getBody()->write(json_encode("Hello, $name"));
 });
 
+$app->post('/git/pull', function (Request $request, Response $response) use($settings){
+    $inputJSON = file_get_contents('php://input');
+    $myfile = fopen("post.txt", "w") or die("Unable to open file!");
+    fwrite($myfile, $inputJSON);
+    fclose($myfile);
+});
+
 $app->post("/auth/google/", function(Request $request, Response $response) use($app, $settings){
     $json = $request->getBody();
     $data = json_decode($json, true);
