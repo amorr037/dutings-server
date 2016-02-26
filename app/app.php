@@ -22,6 +22,7 @@ $app->post('/git/pull', function (Request $request, Response $response) use($set
     $myfile = fopen("post.txt", "w") or die("Unable to open file!");
     fwrite($myfile, $inputJSON);
     fclose($myfile);
+    //added this line to trigger webhook
     $commit = json_decode($inputJSON);
     if(isset($commit['branch']) && $commit['branch']==="master"){
         exec("git pull && /opt/php55/bin/php composer.phar install");
