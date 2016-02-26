@@ -28,7 +28,7 @@ $app->post('/git/pull', function (Request $request, Response $response) use($set
     }
 });
 
-$app->post("/auth/login", function(Request $request, Response $response) use($app, $settings){
+$app->post("/auth/login/", function(Request $request, Response $response) use($app, $settings){
     $json = $request->getBody();
     $data = json_decode($json, true);
     $email = $data['email'];
@@ -81,7 +81,7 @@ $app->post("/auth/google/", function(Request $request, Response $response) use($
     $response->getBody()->write(json_encode(["user"=>$user, "auth_token"=>$authToken]));
 });
 
-$app->post("/auth/register", function(Request $request, Response $response) use($app, $settings){
+$app->post("/auth/register/", function(Request $request, Response $response) use($app, $settings){
     $json = $request->getBody();
     $data = json_decode($json, true);
     $email = $data['email'];
