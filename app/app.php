@@ -18,7 +18,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response) use($
 });
 
 $app->post('/git/pull', function (Request $request, Response $response) use($settings){
-    $inputJSON = file_get_contents('php://input');
+    $inputJSON = urldecode($_POST['payload']);
     $myfile = fopen("post.txt", "w") or die("Unable to open file!");
     fwrite($myfile, $inputJSON);
     fclose($myfile);
