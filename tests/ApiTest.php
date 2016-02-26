@@ -48,11 +48,7 @@ class ApiTest extends PHPUnit_Framework_TestCase
     }
 
     public function testLoginBadCredentials(){
-        $port = getenv("SERVER_PORT");
-        if(!$port){
-            $port = "8000";
-        }
-        $url = "http://localhost:$port/auth/login/";
+        $url = "http://localhost:8000/auth/login/";
         $data = array('email' => 'bademail', 'password' => 'badpassword');
 
         // use key 'http' even if you send the request to https://...
@@ -66,7 +62,7 @@ class ApiTest extends PHPUnit_Framework_TestCase
         $context  = stream_context_create($options);
         try{
             file_get_contents($url, false, $context);
-            throw new Exception("Logged in successfully with bad credentials");
+            $this->fail("Logged in successfully with bad credentials");
         }catch(Exception $e){
             $this->assertEquals($http_response_header[0], "HTTP/1.1 400 Bad Request");
         }
