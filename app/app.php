@@ -23,6 +23,7 @@ $app->post('/git/pull', function (Request $request, Response $response) use($set
     fwrite($myfile, $inputJSON);
     fclose($myfile);
     $commit = json_decode($inputJSON);
+    //testing
     if(isset($commit['branch']) && $commit['branch']==="master"){
         exec("/usr/bin/git pull && /opt/php55/bin/php composer.phar install");
     }
