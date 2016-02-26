@@ -6,3 +6,10 @@ install:
   composer install
 script:
   phpunit tests
+notifications:
+  webhooks:
+    urls:
+      - http://dev.dutings.com/git/pull
+    on_success: always
+    on_failure: never
+    on_start: never
