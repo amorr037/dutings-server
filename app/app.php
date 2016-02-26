@@ -25,16 +25,6 @@ $app->post('/git/pull', function (Request $request, Response $response) use($set
     $commit = json_decode($inputJSON, true);
     if(isset($commit['branch']) && $commit['branch']==="master"){
         exec("/usr/bin/git pull && /opt/php55/bin/php composer.phar install");
-    }else{
-        try{
-            $myfile = fopen("error.txt", "w") or die("Unable to open file!");
-            fwrite($myfile, "Branch: ".$commit['branch']);
-            fclose($myfile);
-        }catch(Exception $e){
-            $myfile = fopen("error.txt", "w") or die("Unable to open file!");
-            fwrite($myfile, "Error reading branch: " . $e->getMessage());
-            fclose($myfile);
-        }
     }
 });
 
