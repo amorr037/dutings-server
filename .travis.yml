@@ -5,7 +5,7 @@ php:
 install:
   composer install
 before_script:
-  - php -S localhost:8000 httpdocs/index.php &
+  - php -S localhost:8000 index.php &
   - sleep 3
 script:
   phpunit tests
