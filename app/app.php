@@ -28,6 +28,31 @@ $app->post('/git/pull', function (Request $request, Response $response) use($set
     }
 });
 
+$app->post("/auth/login", function(Request $request, Response $response) use($app, $settings){
+    $json = $request->getBody();
+    $data = json_decode($json, true);
+    $email = $data['email'];
+    if(!$email){
+        $response->getBody()->write(json_encode("Missing email"));
+        return $response->withStatus(400);
+    }
+    $password = $data['password'];
+    if(!$password){
+        $response->getBody()->write(json_encode("Missing password"));
+        return $response->withStatus(400);
+    }
+    $dataStore = new DataStore($settings);
+    $user = $dataStore->getUser($email);
+    if(!$user || !password_verify($password, $user['PASSWORD'])){
+        $response->getBody()->write(json_encode("Email and password combination not found"));
+        return $response->withStatus(400);
+    }
+    unset($user['PASSWORD']);
+    $authToken = uniqid("auth_", true);
+    $dataStore->createAuthToken($user['ID'], $authToken, 0);
+    $response->getBody()->write(json_encode(["user"=>$user, "auth_token"=>$authToken]));
+});
+
 $app->post("/auth/google/", function(Request $request, Response $response) use($app, $settings){
     $json = $request->getBody();
     $data = json_decode($json, true);
@@ -54,4 +79,35 @@ $app->post("/auth/google/", function(Request $request, Response $response) use($
     $authToken = uniqid("auth_", true);
     $dataStore->createAuthToken($user['ID'], $authToken, 0);
     $response->getBody()->write(json_encode(["user"=>$user, "auth_token"=>$authToken]));
+});
+
+$app->post("/auth/register", function(Request $request, Response $response) use($app, $settings){
+    $json = $request->getBody();
+    $data = json_decode($json, true);
+    $email = $data['email'];
+    if(!$email){
+        $response->getBody()->write(json_encode("Missing email"));
+        return $response->withStatus(400);
+    }
+    $name = $data['name'];
+    if(!$name){
+        $response->getBody()->write(json_encode("Missing name"));
+        return $response->withStatus(400);
+    }
+    $password = $data['password'];
+    if(!$password){
+        $response->getBody()->write(json_encode("Missing password"));
+        return $response->withStatus(400);
+    }
+    $dataStore = new DataStore($settings);
+    $user = $dataStore->getUser($email);
+    if($user){
+        $response->getBody()->write(json_encode("User with the same email already exists"));
+        return $response->withStatus(400);
+    }
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    $dataStore->createUser($email, $passwordHash, $name, "dutings");
+    $user = $dataStore->getUser($email);
+    unset($user['PASSWORD']);
+    $response->getBody()->write(json_encode($user));
 });
