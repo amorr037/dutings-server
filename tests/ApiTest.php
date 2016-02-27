@@ -8,7 +8,7 @@
  */
 
 define('PROJECT_ROOT', realpath(__DIR__ . "/.."));
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 class ApiTest extends PHPUnit_Framework_TestCase
 {
     public function testSettingsFetched()
