@@ -16,6 +16,7 @@ class SettingsTest extends PHPUnit_Framework_TestCase
     private $DUTINGS_DB_HOSTNAME;
     private $DUTINGS_DB_PASSWORD;
     private $GOOGLE_CLIENT_ID;
+    private $hasSettingsFile;
     public function setUp()
     {
         $this->DUTINGS_DB_NAME = getenv("DUTINGS_DB_NAME");
@@ -26,7 +27,8 @@ class SettingsTest extends PHPUnit_Framework_TestCase
 
         $homeDirectory = getenv('HOME');
         $settingsFilePath = "/" . $this->joinPaths($homeDirectory, "settings/dutings.php");
-        if(file_exists($settingsFilePath)){
+        $this->hasSettingsFile = file_exists($settingsFilePath);
+        if($this->hasSettingsFile){
             copy($settingsFilePath, "$settingsFilePath.backup");
             unlink($settingsFilePath);
         }
@@ -42,9 +44,12 @@ class SettingsTest extends PHPUnit_Framework_TestCase
 
         $homeDirectory = getenv('HOME');
         $settingsFilePath = "/" . $this->joinPaths($homeDirectory, "settings/dutings.php");
-        if("$settingsFilePath.backup"){
+        if(file_exists("$settingsFilePath.backup")){
             copy("$settingsFilePath.backup", $settingsFilePath);
             unlink("$settingsFilePath.backup");
+        }
+        if(!$this->hasSettingsFile && file_exists($settingsFilePath)){
+            unlink($settingsFilePath);
         }
     }
 
