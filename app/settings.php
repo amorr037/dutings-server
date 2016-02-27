@@ -34,7 +34,7 @@ if(!function_exists("settingsInit")) {
         $homeDirectory = getenv('HOME');
         $settingsFilePath = "/" . joinPaths($homeDirectory, "settings/dutings.php");
         if (file_exists($settingsFilePath)) {
-            require_once $settingsFilePath;
+            require $settingsFilePath;
         }
 
         if (!$DUTINGS_DB_NAME) {
