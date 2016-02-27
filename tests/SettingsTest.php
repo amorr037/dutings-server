@@ -28,8 +28,8 @@ class SettingsTest extends PHPUnit_Framework_TestCase
         $settingsFilePath = "/" . $this->joinPaths($homeDirectory, "settings/dutings.php");
         if(file_exists($settingsFilePath)){
             copy($settingsFilePath, "$settingsFilePath.backup");
+            unlink($settingsFilePath);
         }
-        unlink($settingsFilePath);
     }
 
     public function tearDown()
@@ -44,8 +44,8 @@ class SettingsTest extends PHPUnit_Framework_TestCase
         $settingsFilePath = "/" . $this->joinPaths($homeDirectory, "settings/dutings.php");
         if("$settingsFilePath.backup"){
             copy("$settingsFilePath.backup", $settingsFilePath);
+            unlink("$settingsFilePath.backup");
         }
-        unlink("$settingsFilePath.backup");
     }
 
     private function joinPaths() {
