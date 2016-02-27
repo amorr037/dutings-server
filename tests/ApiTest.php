@@ -7,18 +7,11 @@
  * Time: 11:34 PM
  */
 
-define('PROJECT_ROOT', realpath(__DIR__ . "/.."));
 require __DIR__ . '/../vendor/rmccue/requests/library/Requests.php';
 Requests::register_autoloader();
 
 class ApiTest extends PHPUnit_Framework_TestCase
 {
-    public function testSettingsFetched()
-    {
-        $settings = require_once PROJECT_ROOT."/app/settings.php";
-        $this->assertNotEquals($settings, null);
-    }
-
     public function testLoginFailsBadCredentials(){
         $headers = array('Accept' => 'application/json');
         $url = "http://localhost:8000/auth/login/";
