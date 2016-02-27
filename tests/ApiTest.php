@@ -8,7 +8,7 @@
  */
 
 define('PROJECT_ROOT', realpath(__DIR__ . "/.."));
-require 'vendor/rmccue/requests/library/Requests.php';
+require __DIR__ . '/../vendor/rmccue/requests/library/Requests.php';
 Requests::register_autoloader();
 
 class ApiTest extends PHPUnit_Framework_TestCase
