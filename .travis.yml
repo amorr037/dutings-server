@@ -15,3 +15,8 @@ notifications:
     on_success: always
     on_failure: never
     on_start: never
+
+before_install:
+  - pip install codecov
+after_success:
+  - codecov
