@@ -12,11 +12,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require_once "DataStore.php";
 $settings = require_once "settings.php";
 
-$app->get('/hello/{name}', function (Request $request, Response $response) use($settings){
-    $name = $request->getAttribute('name');
-    $response->getBody()->write(json_encode("Hello, $name"));
-});
-
 $app->post('/git/pull', function (Request $request, Response $response) use($settings){
     $inputJSON = urldecode($_POST['payload']);
     $myfile = fopen("post.txt", "w") or die("Unable to open file!");
@@ -24,7 +19,7 @@ $app->post('/git/pull', function (Request $request, Response $response) use($set
     fclose($myfile);
     $commit = json_decode($inputJSON, true);
     if(isset($commit['branch']) && $commit['branch']==="master"){
-        exec("/usr/bin/git pull && /opt/php55/bin/php composer.phar install");
+        exec("/usr/bin/git pull && /opt/php55/bin/php composer.phar --no-dev install");
     }
 });
 
