@@ -124,6 +124,10 @@ class SettingsTest extends PHPUnit_Framework_TestCase
     public function testSettingsWithSettingsFile()
     {
         $homeDirectory = getenv('HOME');
+        $settingsFolderPath = "/" . joinPaths($homeDirectory, "settings");
+        if (!file_exists($settingsFolderPath)) {
+            mkdir($settingsFolderPath, 0755, true);
+        }
         $settingsFilePath = "/" . joinPaths($homeDirectory, "settings/dutings.php");
         $settingsFile = fopen($settingsFilePath, "w");
         $txt = '<?php
