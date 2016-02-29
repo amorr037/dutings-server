@@ -4,7 +4,7 @@ php:
 install:
   composer install
 script:
-  phpunit --coverage-clover=coverage.xml tests
+  vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.xml tests
 notifications:
   webhooks:
     urls:
