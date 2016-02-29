@@ -7,13 +7,13 @@
  * Time: 11:34 PM
  */
 
-use Slim\Http\Cookies;
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\RequestBody;
-use Slim\Http\UploadedFile;
-use Slim\Http\Uri;
-use Slim\Http\Request;
+use \Slim\Http\Cookies;
+use \Slim\Http\Environment;
+use \Slim\Http\Headers;
+use \Slim\Http\RequestBody;
+use \Slim\Http\UploadedFile;
+use \Slim\Http\Uri;
+use \Slim\Http\Request;
 
 class TestRequest extends Request{
     public function withParsedJsonBody($data)
