@@ -3,6 +3,7 @@
 [![codecov.io](https://codecov.io/github/amorr037/dutings-server/coverage.svg?branch=master)](https://codecov.io/github/amorr037/dutings-server?branch=master)
 
 Installation:
+
 Option 1 - Set Environment Variables:
 ```
 DUTINGS_DB_NAME={Database name}
