@@ -7,6 +7,8 @@
  * Time: 11:34 PM
  */
 
+require 'vendor/autoload.php';
+
 use \Slim\Http\Cookies;
 use \Slim\Http\Environment;
 use \Slim\Http\Headers;
