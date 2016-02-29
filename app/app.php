@@ -12,6 +12,10 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require_once "DataStore.php";
 $settings = require_once "settings.php";
 
+function get(&$var, $default=null) {
+    return isset($var) ? $var : $default;
+}
+
 $app->post('/git/pull', function (Request $request, Response $response) use($settings){
     $inputJSON = urldecode($_POST['payload']);
     $myfile = fopen("post.txt", "w") or die("Unable to open file!");
@@ -24,9 +28,8 @@ $app->post('/git/pull', function (Request $request, Response $response) use($set
 });
 
 $app->post("/auth/login/", function(Request $request, Response $response) use($app, $settings){
-    $json = $request->getBody();
-    $data = json_decode($json, true);
-    $email = $data['email'];
+    $data = $request->getParsedBody();
+    $email = get($data['email'], null);
     if(!$email){
         $response->getBody()->write(json_encode("Missing email"));
         return $response->withStatus(400);
@@ -49,9 +52,8 @@ $app->post("/auth/login/", function(Request $request, Response $response) use($a
 });
 
 $app->post("/auth/google/", function(Request $request, Response $response) use($app, $settings){
-    $json = $request->getBody();
-    $data = json_decode($json, true);
-    $idToken = $data['id_token'];
+    $data = $request->getParsedBody();
+    $idToken = get($data['id_token'], null);
     $client = new Google_Client();
     $client->setClientId($settings['GOOGLE_CLIENT_ID']);
     try{
@@ -77,19 +79,18 @@ $app->post("/auth/google/", function(Request $request, Response $response) use($
 });
 
 $app->post("/auth/register/", function(Request $request, Response $response) use($app, $settings){
-    $json = $request->getBody();
-    $data = json_decode($json, true);
-    $email = $data['email'];
+    $data = $request->getParsedBody();
+    $email = get($data['email'], null);
     if(!$email){
         $response->getBody()->write(json_encode("Missing email"));
         return $response->withStatus(400);
     }
-    $name = $data['name'];
+    $name = get($data['name'], null);
     if(!$name){
         $response->getBody()->write(json_encode("Missing name"));
         return $response->withStatus(400);
     }
-    $password = $data['password'];
+    $password = get($data['password'], null);
     if(!$password){
         $response->getBody()->write(json_encode("Missing password"));
         return $response->withStatus(400);
