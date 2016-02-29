@@ -7,18 +7,18 @@
  * Time: 11:34 PM
  */
 
-use Slim\Http\Body;
 use Slim\Http\Cookies;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\RequestBody;
 use Slim\Http\UploadedFile;
 use Slim\Http\Uri;
+use Slim\Http\Request;
 
 require __DIR__ . '/../vendor/rmccue/requests/library/Requests.php';
 Requests::register_autoloader();
 
-class TestRequest extends Slim\Http\Request{
+class TestRequest extends Request{
     public function withParsedJsonBody($data)
     {
         if (!is_null($data) && !is_object($data) && !is_array($data)) {
