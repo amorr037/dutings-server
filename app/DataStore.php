@@ -11,8 +11,24 @@ require_once 'vendor/autoload.php';
 
 class DataStore
 {
+    private static $instance;
     private $database;
-    public function __construct($settings)
+    public $cache;
+
+    /**
+     * @param array $settings The settings from which to grab database credentials.
+     * @return DataStore The DataStore instance
+     */
+    public static function getInstance($settings)
+    {
+        if (null === static::$instance) {
+            static::$instance = new DataStore($settings);
+        }
+
+        return static::$instance;
+    }
+
+    private function __construct($settings)
     {
         $this->database = new medoo([
             'database_type' => 'mysql',
@@ -22,10 +38,11 @@ class DataStore
             'password' => $settings['DUTINGS_DB_PASSWORD'],
             'charset' => 'utf8'
         ]);
+        $this->cache = [];
     }
 
     public function getUser($email){
-        $users = $this->database->select(
+        return $this->database->get(
             "USER", [
                 "ID",
                 "EMAIL",
@@ -37,7 +54,6 @@ class DataStore
                 "EMAIL" => $email
             ]
         );
-        return sizeof($users) === 0 ? null : $users[0];
     }
 
     public function createUser($email, $password, $name, $owner){
@@ -57,6 +73,41 @@ class DataStore
                 "USER_ID" => $userId,
                 "AUTH_TOKEN" => $authToken,
                 "EXPIRES_SECONDS" => $expireSeconds
+            ]
+        );
+    }
+
+    public function getAuthToken($authToken){
+        return $this->database->get(
+            "AUTH_TOKEN",[
+                "AUTH_TOKEN",
+                "USER_ID",
+                "CREATED",
+                "EXPIRES_SECONDS"
+            ],[
+                "AUTH_TOKEN" => $authToken,
+            ]
+        );
+    }
+
+    public function createEvent($userId, $name){
+        return $this->database->insert(
+            "EVENT",[
+                "USER_ID" => $userId,
+                "NAME" => $name
+            ]
+        );
+    }
+
+    public function getEvent($eventId){
+        return $this->database->get(
+            "EVENT",[
+                "ID",
+                "USER_ID",
+                "CREATED",
+                "NAME"
+            ],[
+                "ID" => $eventId
             ]
         );
     }

@@ -55,24 +55,30 @@ class TestRequest extends Request{
     }
 }
 
-class ApiTest extends PHPUnit_Framework_TestCase
+abstract class RestfulTest extends PHPUnit_Framework_TestCase
 {
     private $app;
     private $request;
     private $response;
-    public function request($method, $path, $data)
+    public function request($method, $path, $data, $headers=[])
     {
         // Capture STDOUT
         ob_start();
 
         // Prepare a mock environment
 
-        $env = Environment::mock(array_merge(array(
+        $options = [
             'REQUEST_METHOD' => $method,
             'SERVER_PORT' => '8000',
             'REQUEST_URI' => $path,
-            'SERVER_NAME' => 'localhost',
-        ), array()));
+            'SERVER_NAME' => 'localhost'
+        ];
+
+        foreach($headers as $key => $value){
+            $options['HTTP_'.$key] = $value;
+        }
+
+        $env = Environment::mock($options);
 
         $request = TestRequest::createFromEnvironment($env, $data);
         $container = new \Slim\Container(["environment" => $env, "request" => $request]);
@@ -91,14 +97,17 @@ class ApiTest extends PHPUnit_Framework_TestCase
         return ob_get_clean();
     }
 
-    public function post($path, $data=array())
+    public function post($path, $data=array(), $headers=array())
     {
-        return $this->request('POST', $path, $data);
+        return $this->request('POST', $path, $data, $headers);
     }
 
-    public function testLoginFailsBadCredentials(){
-        $data = array('email' => 'bademail', 'password' => 'badpassword');
-        $this->post("/auth/login/", $data);
-        $this->assertEquals($this->response->getStatusCode(), 400);
+    public function getRequest(){
+        return $this->request;
     }
+
+    public function getResponse(){
+        return $this->response;
+    }
+
 }
