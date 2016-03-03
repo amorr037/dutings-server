@@ -149,4 +149,19 @@ $app->group("/api", function() use($app, $settings){
         $events = $dataStore->listEvents($userId);
         $response->getBody()->write(json_encode(["events"=>$events, "invited"=>[]]));
     });
+    $app->post("/events/delete/", function(Request $request, Response $response) use($app, $settings){
+        $data = $request->getParsedBody();
+        $eventId = get($data['event_id'], null);
+        if(!$eventId){
+            $response->getBody()->write(json_encode("Missing event_id"));
+            return $response->withStatus(400);
+        }
+        $dataStore = DataStore::getInstance($settings);
+        $userId = $dataStore->cache['user_id'];
+        $rows = $dataStore->removeEvent($eventId, $userId);
+        if($rows === 0){
+            $response->getBody()->write(json_encode("Event does not exist"));
+            return $response->withStatus(400);
+        }
+    });
 })->add($hasAuthToken);

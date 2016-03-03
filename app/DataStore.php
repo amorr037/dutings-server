@@ -42,8 +42,7 @@ class DataStore
     }
 
     public function getUser($email){
-        return $this->database->get(
-            "USER", [
+        return $this->database->get("USER", [
                 "id",
                 "email",
                 "password",
@@ -57,8 +56,7 @@ class DataStore
     }
 
     public function createUser($email, $password, $name, $owner){
-        return $this->database->insert(
-            "USER",[
+        return $this->database->insert("USER",[
                 "email" => $email,
                 "password" => $password,
                 "name" => $name,
@@ -68,8 +66,7 @@ class DataStore
     }
 
     public function createAuthToken($userId, $authToken, $expireSeconds){
-        return $this->database->insert(
-            "AUTH_TOKEN",[
+        return $this->database->insert("AUTH_TOKEN",[
                 "user_id" => $userId,
                 "auth_token" => $authToken,
                 "expires_seconds" => $expireSeconds
@@ -78,8 +75,7 @@ class DataStore
     }
 
     public function getAuthToken($authToken){
-        return $this->database->get(
-            "AUTH_TOKEN",[
+        return $this->database->get("AUTH_TOKEN",[
                 "auth_token",
                 "user_id",
                 "created",
@@ -91,8 +87,7 @@ class DataStore
     }
 
     public function createEvent($userId, $name){
-        return $this->database->insert(
-            "EVENT",[
+        return $this->database->insert("EVENT",[
                 "user_id" => $userId,
                 "name" => $name
             ]
@@ -100,8 +95,7 @@ class DataStore
     }
 
     public function getEvent($eventId){
-        return $this->database->get(
-            "EVENT",[
+        return $this->database->get("EVENT",[
                 "id",
                 "user_id",
                 "created",
@@ -113,8 +107,7 @@ class DataStore
     }
 
     public function listEvents($userId){
-        return $this->database->select(
-            "EVENT",[
+        return $this->database->select("EVENT",[
                 "id",
                 "user_id",
                 "created",
@@ -123,5 +116,14 @@ class DataStore
                 "user_id" => $userId
             ]
         );
+    }
+
+    public function removeEvent($eventId, $userId){
+        return $this->database->delete("EVENT",[
+            "AND" => [
+                "id" => $eventId,
+                "user_id" => $userId
+            ]
+        ]);
     }
 }

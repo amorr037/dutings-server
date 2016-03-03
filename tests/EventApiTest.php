@@ -27,7 +27,7 @@ class EventRestfulTest extends RestfulTest{
         $this->assertTrue(is_array($events['events']));
     }
 
-    public function testCreateEvent(){
+    public function testCreateAndDeleteEvent(){
         $headers = ["AUTH_TOKEN" => $this->authToken];
         $name = 'testevent';
         $data = array('name' => $name);
@@ -35,6 +35,11 @@ class EventRestfulTest extends RestfulTest{
         $this->assertEquals($this->getResponse()->getStatusCode(), 200);
         $event = json_decode($eventData, true);
         $this->assertEquals($event['name'], $name);
+
+        $eventId = $event['id'];
+        $data = array("event_id" => $eventId);
+        $this->post("/api/events/delete/", $data, $headers);
+        $this->assertEquals($this->getResponse()->getStatusCode(), 200);
     }
 
     public function testCreateEventWithoutAuthentication(){
