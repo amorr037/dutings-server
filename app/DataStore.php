@@ -44,14 +44,14 @@ class DataStore
     public function getUser($email){
         return $this->database->get(
             "USER", [
-                "ID",
-                "EMAIL",
-                "PASSWORD",
-                "NAME",
-                "JOINED",
-                "OWNER"
+                "id",
+                "email",
+                "password",
+                "name",
+                "joined",
+                "owner"
             ], [
-                "EMAIL" => $email
+                "email" => $email
             ]
         );
     }
@@ -59,10 +59,10 @@ class DataStore
     public function createUser($email, $password, $name, $owner){
         return $this->database->insert(
             "USER",[
-                "EMAIL" => $email,
-                "PASSWORD" => $password,
-                "NAME" => $name,
-                "OWNER" => $owner
+                "email" => $email,
+                "password" => $password,
+                "name" => $name,
+                "owner" => $owner
             ]
         );
     }
@@ -70,9 +70,9 @@ class DataStore
     public function createAuthToken($userId, $authToken, $expireSeconds){
         return $this->database->insert(
             "AUTH_TOKEN",[
-                "USER_ID" => $userId,
-                "AUTH_TOKEN" => $authToken,
-                "EXPIRES_SECONDS" => $expireSeconds
+                "user_id" => $userId,
+                "auth_token" => $authToken,
+                "expires_seconds" => $expireSeconds
             ]
         );
     }
@@ -80,12 +80,12 @@ class DataStore
     public function getAuthToken($authToken){
         return $this->database->get(
             "AUTH_TOKEN",[
-                "AUTH_TOKEN",
-                "USER_ID",
-                "CREATED",
-                "EXPIRES_SECONDS"
+                "auth_token",
+                "user_id",
+                "created",
+                "expires_seconds"
             ],[
-                "AUTH_TOKEN" => $authToken,
+                "auth_token" => $authToken,
             ]
         );
     }
@@ -93,8 +93,8 @@ class DataStore
     public function createEvent($userId, $name){
         return $this->database->insert(
             "EVENT",[
-                "USER_ID" => $userId,
-                "NAME" => $name
+                "user_id" => $userId,
+                "name" => $name
             ]
         );
     }
@@ -102,12 +102,25 @@ class DataStore
     public function getEvent($eventId){
         return $this->database->get(
             "EVENT",[
-                "ID",
-                "USER_ID",
-                "CREATED",
-                "NAME"
+                "id",
+                "user_id",
+                "created",
+                "name"
             ],[
-                "ID" => $eventId
+                "id" => $eventId
+            ]
+        );
+    }
+
+    public function listEvents($userId){
+        return $this->database->select(
+            "EVENT",[
+                "id",
+                "user_id",
+                "created",
+                "name"
+            ],[
+                "user_id" => $userId
             ]
         );
     }

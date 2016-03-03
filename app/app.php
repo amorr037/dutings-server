@@ -44,13 +44,13 @@ $app->post("/auth/login/", function(Request $request, Response $response) use($a
     }
     $dataStore = DataStore::getInstance($settings);
     $user = $dataStore->getUser($email);
-    if(!$user || !password_verify($password, $user['PASSWORD'])){
+    if(!$user || !password_verify($password, $user['password'])){
         $response->getBody()->write(json_encode("Email and password combination not found"));
         return $response->withStatus(400);
     }
-    unset($user['PASSWORD']);
+    unset($user['password']);
     $authToken = uniqid("auth_", true);
-    $dataStore->createAuthToken($user['ID'], $authToken, 0);
+    $dataStore->createAuthToken($user['id'], $authToken, 0);
     $response->getBody()->write(json_encode(["user"=>$user, "auth_token"=>$authToken]));
 });
 
@@ -76,9 +76,9 @@ $app->post("/auth/google/", function(Request $request, Response $response) use($
         $dataStore->createUser($email, null, $name, "google");
     }
     $user = $dataStore->getUser($email);
-    unset($user['PASSWORD']);
+    unset($user['password']);
     $authToken = uniqid("auth_", true);
-    $dataStore->createAuthToken($user['ID'], $authToken, 0);
+    $dataStore->createAuthToken($user['id'], $authToken, 0);
     $response->getBody()->write(json_encode(["user"=>$user, "auth_token"=>$authToken]));
 });
 
@@ -109,7 +109,7 @@ $app->post("/auth/register/", function(Request $request, Response $response) use
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
     $dataStore->createUser($email, $passwordHash, $name, "dutings");
     $user = $dataStore->getUser($email);
-    unset($user['PASSWORD']);
+    unset($user['password']);
     $response->getBody()->write(json_encode($user));
 });
 
@@ -124,7 +124,7 @@ $hasAuthToken = function(Request $request, Response $response, $next) use($app, 
     if(!$token){
         return $response->withStatus(401);
     }
-    $dataStore->cache["USER_ID"] = $token['USER_ID'];
+    $dataStore->cache["user_id"] = $token['user_id'];
     return $next($request, $response);
 };
 
@@ -138,9 +138,15 @@ $app->group("/api", function() use($app, $settings){
         }
 
         $dataStore = DataStore::getInstance($settings);
-        $userId = $dataStore->cache['USER_ID'];
+        $userId = $dataStore->cache['user_id'];
         $eventId = $dataStore->createEvent($userId, $name);
         $event = $dataStore->getEvent($eventId);
         $response->getBody()->write(json_encode($event));
+    });
+    $app->post("/events/list/", function(Request $request, Response $response) use($app, $settings){
+        $dataStore = DataStore::getInstance($settings);
+        $userId = $dataStore->cache['user_id'];
+        $events = $dataStore->listEvents($userId);
+        $response->getBody()->write(json_encode(["events"=>$events, "invited"=>[]]));
     });
 })->add($hasAuthToken);
