@@ -25,6 +25,12 @@ class EventRestfulTest extends RestfulTest{
         $dataStore->removeAuthToken($this->authToken);
     }
 
+    public function testBadAuthToken(){
+        $headers = ["AUTH_TOKEN" => "bad_auth_token"];
+        $this->post("/api/events/list/", [], $headers);
+        $this->assertEquals($this->getResponse()->getStatusCode(), 401);
+    }
+
     public function testListEvents(){
         $headers = ["AUTH_TOKEN" => $this->authToken];
         $eventData = $this->post("/api/events/list/", [], $headers);
@@ -46,6 +52,40 @@ class EventRestfulTest extends RestfulTest{
         $data = array("event_id" => $eventId);
         $this->post("/api/events/delete/", $data, $headers);
         $this->assertEquals($this->getResponse()->getStatusCode(), 200);
+    }
+
+    public function testDeleteEventFailsMissingEventId(){
+        $headers = ["AUTH_TOKEN" => $this->authToken];
+        $name = 'testevent';
+        $data = array('name' => $name);
+        $eventData = $this->post("/api/events/create/", $data, $headers);
+        $this->assertEquals($this->getResponse()->getStatusCode(), 200);
+        $event = json_decode($eventData, true);
+        $this->assertEquals($event['name'], $name);
+
+        $data = array();
+        $this->post("/api/events/delete/", $data, $headers);
+        $this->assertEquals($this->getResponse()->getStatusCode(), 400);
+
+        $eventId = $event['id'];
+        $data = array("event_id" => $eventId);
+        $this->post("/api/events/delete/", $data, $headers);
+        $this->assertEquals($this->getResponse()->getStatusCode(), 200);
+    }
+
+    public function testDeleteEventFailsBadEventId(){
+        $headers = ["AUTH_TOKEN" => $this->authToken];
+        $eventId = "bad_event_id";
+        $data = array("event_id" => $eventId);
+        $this->post("/api/events/delete/", $data, $headers);
+        $this->assertEquals($this->getResponse()->getStatusCode(), 400);
+    }
+
+    public function testCreateEventFailsWithoutName(){
+        $headers = ["AUTH_TOKEN" => $this->authToken];
+        $data = array();
+        $this->post("/api/events/create/", $data, $headers);
+        $this->assertEquals($this->getResponse()->getStatusCode(), 400);
     }
 
     public function testCreateEventWithoutAuthentication(){

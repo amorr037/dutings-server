@@ -37,7 +37,7 @@ $app->post("/auth/login/", function(Request $request, Response $response) use($a
         return $response->withStatus(400);
     }
     $email = strtolower($email);
-    $password = $data['password'];
+    $password = get($data['password'], null);
     if(!$password){
         $response->getBody()->write(json_encode("Missing password"));
         return $response->withStatus(400);
