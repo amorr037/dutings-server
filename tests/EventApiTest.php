@@ -19,6 +19,12 @@ class EventRestfulTest extends RestfulTest{
         $this->authToken = $res["auth_token"];
     }
 
+    public function tearDown()
+    {
+        $dataStore = DataStore::getInstance();
+        $dataStore->removeAuthToken($this->authToken);
+    }
+
     public function testListEvents(){
         $headers = ["AUTH_TOKEN" => $this->authToken];
         $eventData = $this->post("/api/events/list/", [], $headers);

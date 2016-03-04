@@ -42,7 +42,7 @@ $app->post("/auth/login/", function(Request $request, Response $response) use($a
         $response->getBody()->write(json_encode("Missing password"));
         return $response->withStatus(400);
     }
-    $dataStore = DataStore::getInstance($settings);
+    $dataStore = DataStore::getInstance();
     $user = $dataStore->getUser($email);
     if(!$user || !password_verify($password, $user['password'])){
         $response->getBody()->write(json_encode("Email and password combination not found"));
@@ -70,7 +70,7 @@ $app->post("/auth/google/", function(Request $request, Response $response) use($
     $name = $attributes['name'];
     $email = $attributes['email'];
     $email = strtolower($email);
-    $dataStore = DataStore::getInstance($settings);
+    $dataStore = DataStore::getInstance();
     $user = $dataStore->getUser($email);
     if($user === null){
         $dataStore->createUser($email, null, $name, "google");
@@ -100,7 +100,7 @@ $app->post("/auth/register/", function(Request $request, Response $response) use
         $response->getBody()->write(json_encode("Missing password"));
         return $response->withStatus(400);
     }
-    $dataStore = DataStore::getInstance($settings);
+    $dataStore = DataStore::getInstance();
     $user = $dataStore->getUser($email);
     if($user){
         $response->getBody()->write(json_encode("User with the same email already exists"));
@@ -119,7 +119,7 @@ $hasAuthToken = function(Request $request, Response $response, $next) use($app, 
         return $response->withStatus(401);
     }
     $authToken = $authTokens[0];
-    $dataStore = DataStore::getInstance($settings);
+    $dataStore = DataStore::getInstance();
     $token = $dataStore->getAuthToken($authToken);
     if(!$token){
         return $response->withStatus(401);
@@ -137,14 +137,14 @@ $app->group("/api", function() use($app, $settings){
             return $response->withStatus(400);
         }
 
-        $dataStore = DataStore::getInstance($settings);
+        $dataStore = DataStore::getInstance();
         $userId = $dataStore->cache['user_id'];
         $eventId = $dataStore->createEvent($userId, $name);
         $event = $dataStore->getEvent($eventId);
         $response->getBody()->write(json_encode($event));
     });
     $app->post("/events/list/", function(Request $request, Response $response) use($app, $settings){
-        $dataStore = DataStore::getInstance($settings);
+        $dataStore = DataStore::getInstance();
         $userId = $dataStore->cache['user_id'];
         $events = $dataStore->listEvents($userId);
         $response->getBody()->write(json_encode(["events"=>$events, "invited"=>[]]));
@@ -156,7 +156,7 @@ $app->group("/api", function() use($app, $settings){
             $response->getBody()->write(json_encode("Missing event_id"));
             return $response->withStatus(400);
         }
-        $dataStore = DataStore::getInstance($settings);
+        $dataStore = DataStore::getInstance();
         $userId = $dataStore->cache['user_id'];
         $rows = $dataStore->removeEvent($eventId, $userId);
         if($rows === 0){

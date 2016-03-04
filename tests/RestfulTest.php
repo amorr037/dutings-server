@@ -7,7 +7,8 @@
  * Time: 11:34 PM
  */
 
-require 'vendor/autoload.php';
+require (__DIR__.'/../vendor/autoload.php');
+require_once (__DIR__."/../app/DataStore.php");
 
 use \Slim\Http\Cookies;
 use \Slim\Http\Environment;
@@ -106,6 +107,9 @@ abstract class RestfulTest extends PHPUnit_Framework_TestCase
         return $this->request;
     }
 
+    /**
+     * @return \Slim\Http\Response The last request's response.
+     */
     public function getResponse(){
         return $this->response;
     }

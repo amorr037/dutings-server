@@ -16,11 +16,11 @@ class DataStore
     public $cache;
 
     /**
-     * @param array $settings The settings from which to grab database credentials.
      * @return DataStore The DataStore instance
      */
-    public static function getInstance($settings)
+    public static function getInstance()
     {
+        $settings = require(__DIR__."/settings.php");
         if (null === static::$instance) {
             static::$instance = new DataStore($settings);
         }
@@ -65,6 +65,12 @@ class DataStore
         );
     }
 
+    public function removeUser($email){
+        return $this->database->delete("USER",[
+            "email" => $email
+        ]);
+    }
+
     public function createAuthToken($userId, $authToken, $expireSeconds){
         return $this->database->insert("AUTH_TOKEN",[
                 "user_id" => $userId,
@@ -84,6 +90,12 @@ class DataStore
                 "auth_token" => $authToken,
             ]
         );
+    }
+
+    public function removeAuthToken($authToken){
+        return $this->database->delete("AUTH_TOKEN",[
+            "auth_token" => $authToken
+        ]);
     }
 
     public function createEvent($userId, $name){
