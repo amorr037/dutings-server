@@ -97,45 +97,4 @@ class DataStore
             "auth_token" => $authToken
         ]);
     }
-
-    public function createEvent($userId, $name){
-        return $this->database->insert("EVENT",[
-                "user_id" => $userId,
-                "name" => $name
-            ]
-        );
-    }
-
-    public function getEvent($eventId){
-        return $this->database->get("EVENT",[
-                "id",
-                "user_id",
-                "created",
-                "name"
-            ],[
-                "id" => $eventId
-            ]
-        );
-    }
-
-    public function listEvents($userId){
-        return $this->database->select("EVENT",[
-                "id",
-                "user_id",
-                "created",
-                "name"
-            ],[
-                "user_id" => $userId
-            ]
-        );
-    }
-
-    public function removeEvent($eventId, $userId){
-        return $this->database->delete("EVENT",[
-            "AND" => [
-                "id" => $eventId,
-                "user_id" => $userId
-            ]
-        ]);
-    }
 }
