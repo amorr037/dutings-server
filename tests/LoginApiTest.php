@@ -88,9 +88,9 @@ class LoginRestfulTest extends RestfulTest{
         $this->assertEquals($this->getResponse()->getStatusCode(), 400);
     }
 
-    public function testLoginGoogleFailsWithNoIdToken(){
-        $data = array();
-        $this->post("/auth/google/", $data);
-        $this->assertEquals($this->getResponse()->getStatusCode(), 401);
-    }
+//    public function testLoginGoogleFailsWithNoIdToken(){
+//        $data = array();
+//        $this->post("/auth/google/", $data);
+//        $this->assertEquals($this->getResponse()->getStatusCode(), 401);
+//    }
 }
