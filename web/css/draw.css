@@ -1,0 +1,72 @@
+html, body, .app-container, .draw-table{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+/*.draw-table td[colspan="0"], .draw-table td[rowspan="0"]{*/
+    /*display: none;*/
+/*}*/
+
+.draw-table, .draw-table th, .draw-table td {
+    border: 1px #D3D3D3 dashed;
+}
+
+.cell{
+    border: 1px black solid;
+    cursor: pointer;
+}
+.cell:hover{
+    background: cornflowerblue;
+}
+
+.page{
+    padding: 20mm;
+    margin: 10mm auto;
+    border: 1px #D3D3D3 dashed;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.page-portrait {
+    width: 215.9mm;
+    height: 279.4mm;
+}
+
+.page-landscape {
+    width: 279.4mm;
+    height: 215.9mm;
+}
+
+.subpage-portrait {
+    height: 239.4mm;
+}
+
+.subpage-landscape {
+    height: 175.9mm;
+}
+
+@page {
+    size: letter;
+    margin: 0;
+}
+@media print {
+    html, body {
+        width: 215.9mm;
+        height: 279.4mm;
+    }
+    .page{
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }
+    .draw-header{
+        display: none;
+    }
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dutings">
+<head>
+    <meta charset="UTF-8">
+    <title>Dutings</title>
+    <link rel="stylesheet" type="text/css" href="/web/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/web/plugins/bootstrap/css/bootstrap-theme.css">
+
+    <link rel="stylesheet" type="text/css" href="/web/css/draw.css">
+    <style id="orientation-style" type="text/css" media="print">
+        @page { size: portrait; }
+    </style>
+</head>
+<body>
+
+<div class="app-container" ng-controller="DrawController as ctrl">
+    <div class="row draw-header">
+        <div class="col-md-12">
+            <label class="radio-inline">
+                <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="portrait"> Portrait
+            </label>
+            <label class="radio-inline">
+                <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="landscape"> Landscape
+            </label>
+            <label class="radio-inline">
+                <input type="number" ng-model="ctrl.columns" ng-change="ctrl.setCellRows()"> Columns
+            </label>
+            <label class="radio-inline">
+                <input type="number" ng-model="ctrl.rows" ng-change="ctrl.setCellRows()"> Rows
+            </label>
+        </div>
+    </div>
+
+    <div class="page" ng-class="{'page-portrait': ctrl.orientation==='portrait', 'page-landscape': ctrl.orientation==='landscape'}">
+        <div class="subpage" ng-class="{'subpage-portrait': ctrl.orientation==='portrait', 'subpage-landscape': ctrl.orientation==='landscape'}">
+            <table class="draw-table">
+                <tbody>
+                <tr ng-repeat="row in ctrl.cellsRows">
+                    <td colspan="{{cell.columns}}"
+                        rowspan="{{cell.rows}}"
+                        class="cell"
+                        ng-repeat="cell in row"
+                        data-toggle="modal"
+                        data-target="#cell-edit-modal"
+                        ng-click="ctrl.selectedCell = cell">
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cell-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Cell Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        Row: {{ctrl.selectedCell.row}}
+                        <br>
+                        Column: {{ctrl.selectedCell.col}}
+                    </div>
+                    <label class="radio-inline">
+                        <input type="number"
+                               ng-model="ctrl.selectedCell.columns"
+                               ng-change="ctrl.cellColumnsChanged(ctrl.selectedCell)">
+                        Columns
+                    </label>
+                    <label class="radio-inline">
+                        <input type="number"
+                               ng-model="ctrl.selectedCell.rows"
+                               ng-change="ctrl.cellRowsChanged(ctrl.selectedCell)">
+                        Rows
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/web/plugins/jquery/jquery-1.12.1.js"></script>
+<script src="/web/plugins/bootstrap/js/bootstrap.js"></script>
+<script src="/web/plugins/angular/angular.js"></script>
+
+<script src="/web/js/angular-app.js"></script>
+</body>
+</html>
