@@ -29,7 +29,7 @@ class DataStore
     }
 
     private function __construct($settings)
-    {
+    { 
         $this->database = new medoo([
             'database_type' => 'mysql',
             'database_name' => $settings['DUTINGS_DB_NAME'],
