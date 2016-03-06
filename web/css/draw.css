@@ -66,7 +66,7 @@ html, body, .app-container, .draw-table{
         background: initial;
         page-break-after: always;
     }
-    .draw-header{
+    .draw-header, .page-header{
         display: none;
     }
 }
