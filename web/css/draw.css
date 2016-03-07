@@ -4,20 +4,18 @@ html, body, .app-container, .draw-table{
     width: 100%;
 }
 
-/*.draw-table td[colspan="0"], .draw-table td[rowspan="0"]{*/
-    /*display: none;*/
-/*}*/
-
 .draw-table, .draw-table th, .draw-table td {
     border: 1px #D3D3D3 dashed;
 }
 
 .cell{
     border: 1px black solid;
-    cursor: pointer;
+}
+.cell.selected{
+    background: beige;
 }
 .cell:hover{
-    background: cornflowerblue;
+    background: beige;
 }
 
 .page{
@@ -47,6 +45,17 @@ html, body, .app-container, .draw-table{
     height: 175.9mm;
 }
 
+.options-menu{
+    max-height: 600px;
+    width: 300px;
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    /*right: 0;*/
+    z-index: 999;
+}
+.draggable{
+    cursor: move;
+}
 @page {
     size: letter;
     margin: 0;
@@ -66,7 +75,7 @@ html, body, .app-container, .draw-table{
         background: initial;
         page-break-after: always;
     }
-    .draw-header, .page-header{
+    .draw-options, .page-header, .options-menu{
         display: none;
     }
 }

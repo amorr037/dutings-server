@@ -1,80 +1,128 @@
 <link rel="stylesheet" type="text/css" href="/web/css/draw.css">
-<div class="col-lg-12">
-    <h1 class="page-header">Draw Grid</h1>
-    <div class="app-container" ng-controller="DrawController as ctrl">
-        <div class="row draw-header">
-            <div class="col-md-12">
-                <label class="radio-inline">
-                    <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="portrait"> Portrait
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="landscape"> Landscape
-                </label>
-                <label class="radio-inline">
-                    <input type="number" ng-model="ctrl.columns" ng-change="ctrl.setCellRows()"> Columns
-                </label>
-                <label class="radio-inline">
-                    <input type="number" ng-model="ctrl.rows" ng-change="ctrl.setCellRows()"> Rows
-                </label>
-                <button class="btn btn-primary" onClick="window.print()">
-                    <i class="fa fa-print"></i>
-                    Print
-                </button>
+<div class="col-lg-12" ng-controller="DrawController as ctrl">
+    <h1 class="page-header">
+        Draw Grid
+        <button class="btn btn-primary" onClick="window.print()">
+            <i class="fa fa-print"></i>
+            Print
+        </button>
+    </h1>
+
+    <div class="app-container">
+        <div class="col-md-12">
+            <div class="page" ng-class="{'page-portrait': ctrl.orientation==='portrait', 'page-landscape': ctrl.orientation==='landscape'}">
+                <div class="subpage" ng-class="{'subpage-portrait': ctrl.orientation==='portrait', 'subpage-landscape': ctrl.orientation==='landscape'}">
+                    <table class="draw-table">
+                        <tbody>
+                        <tr ng-repeat="row in ctrl.cellsRows">
+                            <td colspan="{{cell.columns}}"
+                                rowspan="{{cell.rows}}"
+                                class="cell"
+                                ng-repeat="cell in row"
+                                data-toggle="modal"
+                                data-target="#cell-edit-modal"
+                                ng-click="ctrl.selectedCell = cell"
+                                ng-class="{'selected': ctrl.selectedCell === cell}">
+                                <!--<div class="col-md-12">-->
+                                <!--<div class="col-md-12" style="text-align: center;">-->
+                                <!--<a href="" ng-click="cell.expandUp()"><i class="fa fa-arrow-up"></i></a>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-12">-->
+                                <!--<a href=""><i class="fa fa-arrow-left pull-left"></i></a>-->
+                                <!--<a href=""><i class="fa fa-arrow-right pull-right"></i></a>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-12" style="text-align: center;">-->
+                                <!--<a href=""><i class="fa fa-arrow-down"></i></a>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="page" ng-class="{'page-portrait': ctrl.orientation==='portrait', 'page-landscape': ctrl.orientation==='landscape'}">
-            <div class="subpage" ng-class="{'subpage-portrait': ctrl.orientation==='portrait', 'subpage-landscape': ctrl.orientation==='landscape'}">
-                <table class="draw-table">
-                    <tbody>
-                    <tr ng-repeat="row in ctrl.cellsRows">
-                        <td colspan="{{cell.columns}}"
-                            rowspan="{{cell.rows}}"
-                            class="cell"
-                            ng-repeat="cell in row"
-                            data-toggle="modal"
-                            data-target="#cell-edit-modal"
-                            ng-click="ctrl.selectedCell = cell">
+    </div>
+    <div style="position: fixed; right: 0;bottom: 0;">
+        <div class="options-menu">
+            <div class="panel panel-default">
+                <div class="panel-heading draw-options draggable">Options</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">
+                                        Page Options
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Portrait</td>
+                                        <td> <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="portrait"> </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Landscape</td>
+                                        <td> <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="landscape"> </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Columns</td>
+                                        <td> <input type="number" ng-model="ctrl.columns" ng-change="ctrl.setCellRows()"> </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rows</td>
+                                        <td><input type="number" ng-model="ctrl.rows" ng-change="ctrl.setCellRows()"></td>
+                                    </tr>
+                                </tbody>
+                                <thead ng-show="ctrl.selectedCell">
+                                    <tr>
+                                        <th colspan="2">
+                                            Cell Options
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-show="ctrl.selectedCell">
+                                    <tr>
+                                        <td>Row</td>
+                                        <td>{{ctrl.selectedCell.row}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Column</td>
+                                        <td>{{ctrl.selectedCell.col}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Columns</td>
+                                        <td>
+                                            <input type="number"
+                                                   ng-model="ctrl.selectedCell.columns"
+                                                   ng-change="ctrl.cellColumnsChanged(ctrl.selectedCell)">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rows</td>
+                                        <td>
+                                            <input type="number"
+                                                   ng-model="ctrl.selectedCell.rows"
+                                                   ng-change="ctrl.cellRowsChanged(ctrl.selectedCell)">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="cell-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Cell Edit</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            Row: {{ctrl.selectedCell.row}}
-                            <br>
-                            Column: {{ctrl.selectedCell.col}}
                         </div>
-                        <label class="radio-inline">
-                            <input type="number"
-                                   ng-model="ctrl.selectedCell.columns"
-                                   ng-change="ctrl.cellColumnsChanged(ctrl.selectedCell)">
-                            Columns
-                        </label>
-                        <label class="radio-inline">
-                            <input type="number"
-                                   ng-model="ctrl.selectedCell.rows"
-                                   ng-change="ctrl.cellRowsChanged(ctrl.selectedCell)">
-                            Rows
-                        </label>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+
+
+    <script>
+        var menu = $('.options-menu');
+        menu.draggable();
+    </script>
 </div>

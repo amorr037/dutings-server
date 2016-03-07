@@ -83,7 +83,8 @@
                 for(i = 0 ; i < cell.rows; i++) {
                     rowIndex = cell.row + i;
                     row = self.cellsRows[rowIndex];
-                    row.splice(cell.col + 1, added);
+                    var pos = i === 0 ? cell.col + 1 : cell.col;
+                    row.splice(pos, added);
                     for(j = cell.col; j < row.length; j++){
                         row[j].col = j;
                     }
@@ -116,7 +117,7 @@
             }else if(cell.prevRows < cell.rows){
                 modified = cell.rows - cell.prevRows;
                 for(i = 0 ; i < modified; i++){
-                    rowIndex = cell.row + cell.rows + i - 1;
+                    rowIndex = cell.row + cell.prevRows + i;
                     row = self.cellsRows[rowIndex];
                     for(j = 0; j < cell.columns; j++){
                         row.splice(cell.col, 1);
@@ -156,6 +157,17 @@
                 var percent = this.rows / self.rows * 100;
                 return percent+"%";
             };
+
+            this.expandUp = function(){
+                var r = row-1;
+                var c = col;
+                var cell = self.cellsRows[r][c];
+                while(!cell){
+                    cell = self.cellsRows[r][--c];
+                }
+                cell.rows+=this.rows;
+                self.cellRowsChanged(cell);
+            }
         }
 
         return self;
