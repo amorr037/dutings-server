@@ -18,7 +18,17 @@
                          dutings-cell="cell"
                          on-change="ctrl.cellChanged(cell)"
                          ng-repeat="cell in ctrl.cells">
-                        <textarea class="dutings-input-text"></textarea>
+
+                        <div ng-if="cell.type === 'text'" class="dutings-cell-input">{{cell.input.value}}</div>
+
+                        <div ng-if="cell.type === 'number'" class="dutings-cell-input"> {{cell.input.value}} </div>
+
+                        <div class="dutings-cell-input" ng-if="cell.type === 'checkbox'">
+                            <input type="checkbox" ng-model="cell.input.value" ng-change="cell.input.value = !cell.input.value">
+                        </div>
+
+                        <div class="dutings-cell-input" ng-if="cell.type === 'label'">{{cell.input.value}}</div>
+
                     </div>
                 </div>
             </div>
@@ -28,15 +38,23 @@
     <div style="position: fixed; right: 0;bottom: 0;">
         <div class="options-menu">
             <div class="panel panel-default">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#">Home</a></li>
-                    <li role="presentation"><a href="#">Profile</a></li>
-                    <li role="presentation"><a href="#">Messages</a></li>
+                <ul class="nav nav-tabs nav-justified">
+                    <li role="presentation"
+                        ng-class="{'active': ctrl.menuTab === 'create'}"
+                        ng-click="ctrl.menuTab = 'create'">
+                        <a href="" ng-click="ctrl.menuTab = 'create'">Create</a>
+                    </li>
+                    <li role="presentation"
+                        ng-class="{'active': ctrl.menuTab === 'edit'}"
+                        ng-show="ctrl.selectedCell"
+                        ng-click="ctrl.menuTab = 'edit'">
+                        <a href="">Edit</a>
+                    </li>
                 </ul>
                 <div class="panel-body">
                     <div class="row">
-
-                        <div class="col-md-12">
+                        <!-- CREATE OPTIONS -->
+                        <div class="col-md-12 create-tab" ng-show="ctrl.menuTab === 'create'">
                             <table style="width: 100%">
                                 <thead>
                                 <tr>
@@ -46,47 +64,55 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Portrait</td>
-                                        <td> <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="portrait"> </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Landscape</td>
-                                        <td> <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="landscape"> </td>
-                                    </tr>
+                                <tr>
+                                    <td>Portrait</td>
+                                    <td> <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="portrait"> </td>
+                                </tr>
+                                <tr>
+                                    <td>Landscape</td>
+                                    <td> <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="landscape"> </td>
+                                </tr>
                                 </tbody>
-                                <thead ng-show="ctrl.selectedCell">
-                                    <tr>
-                                        <th colspan="2">
-                                            Cell Options
-                                        </th>
-                                    </tr>
+
+                                <thead>
+                                <tr>
+                                    <th colspan="2">
+                                        New Cells
+                                    </th>
+                                </tr>
                                 </thead>
-                                <tbody ng-show="ctrl.selectedCell">
-                                    <tr>
-                                        <td>Row</td>
-                                        <td>{{ctrl.selectedCell.row}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Column</td>
-                                        <td>{{ctrl.selectedCell.col}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Columns</td>
-                                        <td>
-                                            <input type="number"
-                                                   ng-model="ctrl.selectedCell.columns"
-                                                   ng-change="ctrl.cellColumnsChanged(ctrl.selectedCell)">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rows</td>
-                                        <td>
-                                            <input type="number"
-                                                   ng-model="ctrl.selectedCell.rows"
-                                                   ng-change="ctrl.cellRowsChanged(ctrl.selectedCell)">
-                                        </td>
-                                    </tr>
+                                <tbody>
+                                <tr ng-repeat="(type,value) in ctrl.inputTypes">
+                                    <td>{{type}}</td>
+                                    <td><button class="btn btn-primary" ng-click="ctrl.createCell(type)">+</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- EDIT OPTIONS -->
+                        <div class="col-md-12 edit-tab" ng-show="ctrl.menuTab === 'edit'">
+                            <table style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">
+                                        Cell Options
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Type</td>
+                                    <td>{{ ctrl.selectedCell.type }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Value</td>
+                                    <td>
+                                        <input ng-if="ctrl.selectedCell.type === 'number'" type="number" ng-model="ctrl.selectedCell.input.value">
+                                        <input ng-if="ctrl.selectedCell.type === 'label'" type="text" ng-model="ctrl.selectedCell.input.value">
+                                        <input ng-if="ctrl.selectedCell.type === 'checkbox'" type="checkbox" ng-model="ctrl.selectedCell.input.value">
+                                        <textarea ng-if="ctrl.selectedCell.type === 'text'" ng-model="ctrl.selectedCell.input.value"></textarea>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
 

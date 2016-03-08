@@ -27,7 +27,8 @@
 
             element.resizable({
                 grid: [ 10, 10 ],
-                containment: "parent"
+                containment: "parent",
+                handles: "n, e, s, w"
             });
 
             element.css({

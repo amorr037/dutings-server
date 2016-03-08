@@ -8,7 +8,25 @@
         self.orientation = "portrait";
         self.cells = [];
         self.selectedCell = null;
-        self.cells.push(new Cell(100, 100, 50, 50));
+        self.menuTab = "create";
+
+        self.inputTypes = {
+            "text": {"value": "text"},
+            "number": {"value": 0},
+            "checkbox": {"value": false},
+            "label": {"value": "label"}
+        };
+
+        self.editCell = function(cell){
+            self.selectedCell = cell;
+            self.menuTab = "edit";
+        };
+
+        self.createCell = function(type){
+            var cell = new Cell(50, 50, 0, 0, type);
+            self.cells.push(cell);
+            self.editCell(cell);
+        };
 
         self.orientationChanged = function(){
             console.log("Orientation Changed:");
@@ -29,17 +47,13 @@
             if(!type){
                 type = "text-field";
             }
-            var inputs = {
-                "text": {"value": ""},
-                "number": {"value": ""},
-                "boolean": {"value": false}
-            };
+
             this.width = width;
             this.height = height;
             this.top = top;
             this.left = left;
             this.type = type;
-            this.input = inputs[type];
+            this.input = JSON.parse(JSON.stringify(self.inputTypes[type]));
         }
 
         return self;
