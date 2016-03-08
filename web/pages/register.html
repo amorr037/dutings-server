@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dutings">
+<head>
+    <meta charset="UTF-8">
+    <title>Dutings</title>
+    <link rel="stylesheet" type="text/css"  href="/web/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css"  href="/web/plugins/bootstrap/css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/web/css/register.css">
+</head>
+<body>
+    <div  ng-controller="RegisterCtrl as ctrl">
+        <div class="container">
+            <div id="signupbox" style=" margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                <div class="panel panel-dutings">
+                    <div class="panel-heading">
+                        <div class="panel-title" style="color: white">Sign Up</div>
+                    </div>
+                    <div class="panel-body" >
+                        <form id="signupform" class="form-horizontal" role="form">
+                            <div id="signupalert" style="display:none" class="alert alert-danger">
+                                <p>Error:</p>
+                                <span></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Name</label>
+                                <div class="col-md-9">
+                                    <input ng-model="ctrl.name" type="text" class="form-control" name="name" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Email</label>
+                                <div class="col-md-9">
+                                    <input ng-model="ctrl.email" type="text" class="form-control" name="email" placeholder="Email Address">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Company Name</label>
+                                <div class="col-md-9">
+                                    <input ng-model="ctrl.companyName" type="text" class="form-control" name="company-name" placeholder="Company Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Phone Number</label>
+                                <div class="col-md-9">
+                                    <input ng-model="ctrl.phoneNumber" type="text" class="form-control" name="phone-number" placeholder="Phone Number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Password</label>
+                                <div class="col-md-9">
+                                    <input ng-model="ctrl.password" type="password" class="form-control" name="passwd" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Confirm Password</label>
+                                <div class="col-md-9">
+                                    <input ng-model="ctrl.repassword" type="password" class="form-control" name="confirm-passwd" placeholder="Confirm Password">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <!-- Button -->
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a ng-click="ctrl.sendConfirmationEmail()" style="color: white" href="">
+                                        <button id="btn-signup" type="button" class="btn" style="background-color: #1b647a">
+                                        <i class="icon-hand-right"></i> &nbsp Sign Up
+                                    </button></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/web/plugins/jquery/jquery-1.12.1.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="/web/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="/web/plugins/angular/angular.js"></script>
+    <script src="/web/plugins/angular/angular-ui-router.js"></script>
+    <script src="/web/js/angular-app.js"></script>
+    <script src="/web/js/controller-register.js"></script>
+</body>
+</html>

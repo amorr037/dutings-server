@@ -3,8 +3,7 @@
  */
 (function(){
     angular.module('dutings', [
-        'ui.router',
-        'dndLists'
+        'ui.router'
     ]);
 
     angular.module('dutings').config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
@@ -13,6 +12,6 @@
         $stateProvider.state('app', {
             url: '/draw',
             templateUrl: "/web/pages/draw.html"
-        });
+        })
     }]);
 })();

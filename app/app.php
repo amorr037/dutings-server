@@ -22,6 +22,10 @@ $app->get("/", function(Request $request, Response $response){
     echo file_get_contents("web/index.html");
 });
 
+$app->get("/register", function(Request $request, Response $response){
+    echo file_get_contents("web/pages/register.html");
+});
+
 $app->post('/git/pull', function (Request $request, Response $response) use($settings){
     $inputJSON = urldecode($_POST['payload']);
     $myfile = fopen("post.txt", "w") or die("Unable to open file!");
