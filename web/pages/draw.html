@@ -12,33 +12,14 @@
         <div class="col-md-12">
             <div class="page" ng-class="{'page-portrait': ctrl.orientation==='portrait', 'page-landscape': ctrl.orientation==='landscape'}">
                 <div class="subpage" ng-class="{'subpage-portrait': ctrl.orientation==='portrait', 'subpage-landscape': ctrl.orientation==='landscape'}">
-                    <table class="draw-table">
-                        <tbody>
-                        <tr ng-repeat="row in ctrl.cellsRows">
-                            <td colspan="{{cell.columns}}"
-                                rowspan="{{cell.rows}}"
-                                class="cell"
-                                ng-repeat="cell in row"
-                                data-toggle="modal"
-                                data-target="#cell-edit-modal"
-                                ng-click="ctrl.selectedCell = cell"
-                                ng-class="{'selected': ctrl.selectedCell === cell}">
-                                <!--<div class="col-md-12">-->
-                                <!--<div class="col-md-12" style="text-align: center;">-->
-                                <!--<a href="" ng-click="cell.expandUp()"><i class="fa fa-arrow-up"></i></a>-->
-                                <!--</div>-->
-                                <!--<div class="col-md-12">-->
-                                <!--<a href=""><i class="fa fa-arrow-left pull-left"></i></a>-->
-                                <!--<a href=""><i class="fa fa-arrow-right pull-right"></i></a>-->
-                                <!--</div>-->
-                                <!--<div class="col-md-12" style="text-align: center;">-->
-                                <!--<a href=""><i class="fa fa-arrow-down"></i></a>-->
-                                <!--</div>-->
-                                <!--</div>-->
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="dutings-cell"
+                         ng-class="{'selected': ctrl.selectedCell === cell}"
+                         ng-click="ctrl.selectedCell = cell"
+                         dutings-cell="cell"
+                         on-change="ctrl.cellChanged(cell)"
+                         ng-repeat="cell in ctrl.cells">
+                        <textarea class="dutings-input-text"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,9 +28,14 @@
     <div style="position: fixed; right: 0;bottom: 0;">
         <div class="options-menu">
             <div class="panel panel-default">
-                <div class="panel-heading draw-options draggable">Options</div>
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">Home</a></li>
+                    <li role="presentation"><a href="#">Profile</a></li>
+                    <li role="presentation"><a href="#">Messages</a></li>
+                </ul>
                 <div class="panel-body">
                     <div class="row">
+
                         <div class="col-md-12">
                             <table style="width: 100%">
                                 <thead>
@@ -67,14 +53,6 @@
                                     <tr>
                                         <td>Landscape</td>
                                         <td> <input type="radio" ng-model="ctrl.orientation" ng-change="ctrl.orientationChanged()" value="landscape"> </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Columns</td>
-                                        <td> <input type="number" ng-model="ctrl.columns" ng-change="ctrl.setCellRows()"> </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rows</td>
-                                        <td><input type="number" ng-model="ctrl.rows" ng-change="ctrl.setCellRows()"></td>
                                     </tr>
                                 </tbody>
                                 <thead ng-show="ctrl.selectedCell">
