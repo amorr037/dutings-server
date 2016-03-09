@@ -21,6 +21,9 @@ if(!function_exists("get")) {
 $app->get("/", function(Request $request, Response $response){
     echo file_get_contents("web/index.html");
 });
+$app->get("/login", function(Request $request, Response $response){
+    echo file_get_contents("web/pages/login.html");
+});
 
 $app->post('/git/pull', function (Request $request, Response $response) use($settings){
     $inputJSON = urldecode($_POST['payload']);
